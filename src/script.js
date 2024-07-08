@@ -48,8 +48,11 @@ videoElement.addEventListener("loadedmetadata", () => {
   sprite.scale.set(desiredWidth, desiredHeight, 1);
   videoElement.play();
 });
-document.querySelector(".popup").classList.add("show");
-document.querySelector(".popup").style.display = "block";
+
+setTimeout(() => {
+  document.querySelector(".popup").classList.add("show");
+  document.querySelector(".popup").style.display = "block";
+}, 5000);
 
 videoElement.addEventListener("ended", () => {
   videoElement.loop = true;
