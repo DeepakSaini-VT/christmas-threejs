@@ -65,6 +65,14 @@ body {
   transition: opacity 0.5s ease-out;
   border: 1px solid white;
   background: radial-gradient(
+    49.31% 299.31% at 50% 50%,
+    rgba(38, 57, 142, 0.5) 0%,
+    rgba(0, 3, 21, 0.5) 100%
+  );
+  -webkit-backdrop-filter: blur(10px) saturate(100%) !important;
+  backdrop-filter: blur(10px) saturate(100%);
+
+  /* background: radial-gradient(
     100% 100% at 0% 0%,
     rgba(19, 34, 61, 0.2) 150%,
     rgba(1, 56, 160, 0.5) 100%
@@ -72,7 +80,7 @@ body {
   background-color: rgba(2, 56, 156, 0.1);
   -webkit-backdrop-filter: blur(5px) saturate(100%) !important;
   backdrop-filter: blur(5px) saturate(10%);
-  filter: sepia(0%) saturate(650%) brightness(110%);
+  filter: sepia(0%) saturate(650%) brightness(110%); */
 }
 
 .soundPopup {
@@ -91,14 +99,12 @@ body {
   transition: opacity 0.5s ease-out;
   border: 1px solid white;
   background: radial-gradient(
-    100% 100% at 0% 0%,
-    rgba(19, 34, 61, 0.2) 150%,
-    rgba(1, 56, 160, 0.5) 100%
+    49.31% 299.31% at 50% 50%,
+    rgba(38, 57, 142, 0.5) 0%,
+    rgba(0, 3, 21, 0.5) 100%
   );
-  background-color: rgba(2, 56, 156, 0.1);
-  -webkit-backdrop-filter: blur(5px) saturate(100%) !important;
-  backdrop-filter: blur(5px) saturate(10%);
-  filter: sepia(0%) saturate(650%) brightness(110%);
+  -webkit-backdrop-filter: blur(10px) saturate(100%) !important;
+  backdrop-filter: blur(10px) saturate(100%);
 }
 
 .soundPopup.show {
@@ -165,6 +171,12 @@ body {
   transition: background-color 0.3s;
 }
 
+.optionbg {
+  width: 100%;
+  height: 100%;
+  background-color: white !important;
+}
+
 .submitBtnDiv {
   width: 100%;
   padding: 0px 10px 10px 10px;
@@ -184,18 +196,51 @@ body {
   font-weight: 700;
   width: 50%;
   margin-bottom: 15px;
-  filter: saturate(25%) !important;
 }
 
 .selected {
-  background-color: #ceb07c !important;
-  filter: saturate(25%) !important;
-  border: 0px !important;
-  font-family: Univers !important;
+  border: 2px solid transparent !important;
+  /* For Safari */
+  color: #ceb07c !important;
+  border: 4px solid transparent !important;
+  border-image: linear-gradient(
+      90deg,
+      #9f6d37 0%,
+      #ceb07c 25%,
+      #ffdc97 50%,
+      #ceb07c 75%,
+      #9f6d37 100%
+    )
+    1 !important;
+  font-weight: 1000 !important;
+  background: white !important;
+  -webkit-border-image: -webkit-linear-gradient(
+      90deg,
+      #9f6d37 0%,
+      #ceb07c 25%,
+      #ffdc97 50%,
+      #ceb07c 75%,
+      #9f6d37 100%
+    )
+    1 !important;
+  border-image-slice: 1 !important;
+  border-image-source: linear-gradient(
+    90deg,
+    #ffdc97 0%,
+    #ceb07c 51%,
+    #9f6d37 100%
+  ) !important;
 }
 
 .submitted {
-  background-color: #ceb07c !important;
+  background: linear-gradient(
+    90deg,
+    rgba(159, 109, 55, 0.8) 0%,
+    rgba(206, 176, 124, 0.8) 25%,
+    rgba(255, 220, 151, 0.8) 50%,
+    rgba(206, 176, 124, 0.8) 75%,
+    rgba(159, 109, 55, 0.8) 100%
+  ) !important;
 }
 
 /* For screens smaller than 320px */
@@ -216,7 +261,7 @@ body {
   /* .mobile-view {
     width: 100vw;
   } */
-  .soundPopup{
+  .soundPopup {
     width: 90vw;
     max-width: 60vw;
   }
@@ -232,7 +277,7 @@ body {
     width: 90vw;
   } */
 
-  .soundPopup{
+  .soundPopup {
     width: 90vw;
     max-width: 40vw;
   }
