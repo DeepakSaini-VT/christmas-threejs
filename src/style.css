@@ -1,0 +1,253 @@
+@font-face {
+  font-family: "UniversBold";
+  src: url("../public/fonts/Univers/Univers-Bold.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Univers";
+  src: url("../public/fonts/Univers/Univers.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "UniversLight";
+  src: url("../public/fonts/Univers/Univers-Light.otf") format("opentype");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  overflow-y: hidden;
+}
+
+body {
+  background-color: #000000;
+}
+
+.mobile-view {
+  position: relative;
+  width: 50vw;
+  height: 100vh;
+  left: 50%;
+  translate: -50%;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  align-items: center;
+}
+
+#game {
+  top: 0;
+  margin-top: 0;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#webgl {
+  width: 100%;
+  display: block;
+}
+
+.popup {
+  position: absolute;
+  width: 25vw;
+  background: #13223d;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  max-width: 50%;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+  border: 1px solid white;
+}
+
+.popup.show {
+  opacity: 1;
+}
+
+.popup.hide {
+  transition: opacity 0.2s ease-out;
+}
+
+.popup-heading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 35px 20px 20px 20px;
+  color: white;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  background-color: transparent;
+}
+
+.heading-div {
+  margin: 0;
+}
+
+.heading {
+  text-align: center;
+  font-family: Univers;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.closing-div {
+  cursor: pointer;
+  font-size: 24px;
+  line-height: 1;
+  overflow: hidden;
+  padding: 5px;
+}
+
+.popup-content {
+  padding: 20px 30px;
+}
+
+.option {
+  margin-bottom: 15px;
+}
+
+.option button {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid white;
+  background-color: transparent;
+  color: white;
+  font-size: 16px;
+  font-family: UniversLight;
+  font-weight: 400;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.submitBtnDiv {
+  width: 100%;
+  padding: 0px 10px 10px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.submitBtn {
+  background: #c0c0c0;
+  border: 0px;
+  color: white;
+  font-size: 18px;
+  border-radius: 5px;
+  padding: 10px 10px;
+  font-family: Univers;
+  font-weight: 700;
+  width: 50%;
+  margin-bottom: 15px;
+}
+
+.selected {
+  background-color: #ceb07c !important;
+  border: 0px !important;
+  font-family: Univers !important;
+}
+
+.submitted {
+  background-color: #ceb07c !important;
+}
+
+/* For screens smaller than 320px */
+@media (max-width: 319px) {
+  .mobile-view {
+    width: 100vw;
+  }
+
+  .popup {
+    width: 100vw;
+    max-width: 95vw;
+  }
+}
+
+/* For screens between 320px and 480px */
+@media (min-width: 320px) and (max-width: 479px) {
+  .mobile-view {
+    width: 100vw;
+  }
+
+  .popup {
+    width: 100vw;
+    max-width: 80vw;
+  }
+}
+
+/* For screens between 480px and 768px */
+@media (min-width: 480px) and (max-width: 767px) {
+  .mobile-view {
+    width: 90vw;
+  }
+
+  .popup {
+    width: 100vw;
+    max-width: 60vw;
+  }
+}
+
+/* For screens between 768px and 1024px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .mobile-view {
+    width: 50vw;
+  }
+
+  .popup {
+    width: 100vw;
+    max-width: 40vw;
+  }
+}
+
+/* For screens between 1024px and 1440px */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .mobile-view {
+    width: 40vw;
+  }
+
+  .popup {
+    width: 90vw;
+    max-width: 30vw;
+  }
+}
+
+/* For screens wider than 1440px */
+@media (min-width: 1440px) and (max-width: 1740px) {
+  .mobile-view {
+    width: 40vw;
+  }
+
+  .popup {
+    width: 90vw;
+    max-width: 21vw;
+  }
+}
+
+/* For screens up to 1740px */
+@media (min-width: 1740px) and (max-width: 1920px) {
+  .mobile-view {
+    width: 40vw;
+  }
+
+  .popup {
+    width: 90vw;
+    max-width: 21vw;
+  }
+}
+
+/* For screens up to 1920px */
+@media (min-width: 1920px) {
+  .mobile-view {
+    width: 40vw;
+  }
+
+  .popup {
+    width: 90vw;
+    max-width: 21vw;
+  }
+}
