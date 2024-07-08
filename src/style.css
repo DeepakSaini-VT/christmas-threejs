@@ -25,7 +25,7 @@ body {
 
 .mobile-view {
   position: relative;
-  width: 50vw;
+  width: 512px;
   height: 100vh;
   left: 50%;
   translate: -50%;
@@ -52,6 +52,7 @@ body {
 .popup {
   position: absolute;
   width: 25vw;
+  display: none;
   background: #13223d;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
@@ -63,6 +64,45 @@ body {
   opacity: 0;
   transition: opacity 0.5s ease-out;
   border: 1px solid white;
+  background: radial-gradient(
+    100% 100% at 0% 0%,
+    rgba(19, 34, 61, 0.2) 150%,
+    rgba(1, 56, 160, 0.5) 100%
+  );
+  background-color: rgba(2, 56, 156, 0.1);
+  -webkit-backdrop-filter: blur(5px) saturate(100%) !important;
+  backdrop-filter: blur(5px) saturate(10%);
+  filter: sepia(0%) saturate(650%) brightness(110%);
+}
+
+.soundPopup {
+  position: absolute;
+  width: 25vw;
+  display: block;
+  background: #13223d;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  max-width: 50%;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+  border: 1px solid white;
+  background: radial-gradient(
+    100% 100% at 0% 0%,
+    rgba(19, 34, 61, 0.2) 150%,
+    rgba(1, 56, 160, 0.5) 100%
+  );
+  background-color: rgba(2, 56, 156, 0.1);
+  -webkit-backdrop-filter: blur(5px) saturate(100%) !important;
+  backdrop-filter: blur(5px) saturate(10%);
+  filter: sepia(0%) saturate(650%) brightness(110%);
+}
+
+.soundPopup.show {
+  opacity: 1;
 }
 
 .popup.show {
@@ -144,10 +184,12 @@ body {
   font-weight: 700;
   width: 50%;
   margin-bottom: 15px;
+  filter: saturate(25%) !important;
 }
 
 .selected {
   background-color: #ceb07c !important;
+  filter: saturate(25%) !important;
   border: 0px !important;
   font-family: Univers !important;
 }
@@ -157,11 +199,12 @@ body {
 }
 
 /* For screens smaller than 320px */
-@media (max-width: 319px) {
-  .mobile-view {
+@media (max-width: 320px) {
+  /* .mobile-view {
     width: 100vw;
-  }
+  } */
 
+  .soundPopup,
   .popup {
     width: 100vw;
     max-width: 95vw;
@@ -170,10 +213,13 @@ body {
 
 /* For screens between 320px and 480px */
 @media (min-width: 320px) and (max-width: 479px) {
-  .mobile-view {
+  /* .mobile-view {
     width: 100vw;
+  } */
+  .soundPopup{
+    width: 90vw;
+    max-width: 60vw;
   }
-
   .popup {
     width: 100vw;
     max-width: 80vw;
@@ -182,10 +228,14 @@ body {
 
 /* For screens between 480px and 768px */
 @media (min-width: 480px) and (max-width: 767px) {
-  .mobile-view {
+  /* .mobile-view {
     width: 90vw;
-  }
+  } */
 
+  .soundPopup{
+    width: 90vw;
+    max-width: 40vw;
+  }
   .popup {
     width: 100vw;
     max-width: 60vw;
@@ -194,10 +244,14 @@ body {
 
 /* For screens between 768px and 1024px */
 @media (min-width: 768px) and (max-width: 1023px) {
-  .mobile-view {
+  /* .mobile-view {
     width: 50vw;
-  }
+  } */
 
+  .soundPopup {
+    width: 90vw;
+    max-width: 25vw;
+  }
   .popup {
     width: 100vw;
     max-width: 40vw;
@@ -206,10 +260,14 @@ body {
 
 /* For screens between 1024px and 1440px */
 @media (min-width: 1024px) and (max-width: 1439px) {
-  .mobile-view {
+  /* .mobile-view {
     width: 40vw;
-  }
+  } */
 
+  .soundPopup {
+    width: 90vw;
+    max-width: 20vw;
+  }
   .popup {
     width: 90vw;
     max-width: 30vw;
@@ -218,10 +276,14 @@ body {
 
 /* For screens wider than 1440px */
 @media (min-width: 1440px) and (max-width: 1740px) {
-  .mobile-view {
+  /* .mobile-view {
     width: 40vw;
-  }
+  } */
 
+  .soundPopup {
+    width: 90vw;
+    max-width: 20vw;
+  }
   .popup {
     width: 90vw;
     max-width: 21vw;
@@ -230,10 +292,14 @@ body {
 
 /* For screens up to 1740px */
 @media (min-width: 1740px) and (max-width: 1920px) {
-  .mobile-view {
+  /* .mobile-view {
     width: 40vw;
-  }
+  } */
 
+  .soundPopup {
+    width: 90vw;
+    max-width: 20vw;
+  }
   .popup {
     width: 90vw;
     max-width: 21vw;
@@ -242,10 +308,14 @@ body {
 
 /* For screens up to 1920px */
 @media (min-width: 1920px) {
-  .mobile-view {
+  /* .mobile-view {
     width: 40vw;
-  }
+  } */
 
+  .soundPopup {
+    width: 90vw;
+    max-width: 20vw;
+  }
   .popup {
     width: 90vw;
     max-width: 21vw;

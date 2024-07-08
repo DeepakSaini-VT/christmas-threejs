@@ -28,7 +28,6 @@ camera.position.set(0, 0, 10);
 const videoElement = document.createElement("video");
 videoElement.src = "../public/video.mp4";
 videoElement.load();
-videoElement.muted = true;
 
 const videoTexture = new THREE.VideoTexture(videoElement);
 videoTexture.colorSpace = THREE.SRGBColorSpace;
@@ -40,40 +39,18 @@ videoElement.addEventListener("loadedmetadata", () => {
   videoTexture.needsUpdate = true;
   const originalWidth = videoElement.videoWidth;
   const originalHeight = videoElement.videoHeight;
-  // const videoAspectRatio1 = originalWidth / originalHeight;
+
   const desiredHeight = window.innerHeight;
   const ratio = originalHeight / desiredHeight;
   const desiredWidth = originalWidth / ratio;
-  // const videoAspectRatio2 = desiredWidth / desiredHeight;
-  sprite.scale.set(desiredWidth, desiredHeight, 1);
-  videoElement.play();
-});
 
-setTimeout(() => {
-  document.querySelector(".popup").classList.add("show");
-  document.querySelector(".popup").style.display = "block";
-}, 5000);
+  sprite.scale.set(desiredWidth, desiredHeight, 1);
+});
 
 videoElement.addEventListener("ended", () => {
   videoElement.loop = true;
   videoElement.play();
 });
-
-/**
- * Sound
- */
-const listener = new THREE.AudioListener();
-camera.add(listener);
-const sound = new THREE.Audio(listener);
-const audioLoader = new THREE.AudioLoader();
-audioLoader.load(
-  "../public/gentle-electric-guitar-loop-smoot-wet_160bpm_E_major.wav",
-  (audioBuffer) => {
-    sound.setBuffer(audioBuffer);
-    sound.setLoop(true);
-    sound.setVolume(1);
-  }
-);
 
 /**
  * Renderer
@@ -82,12 +59,31 @@ const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 updateRendererProperties(sizes.x, sizes.y);
 renderer.render(scene, camera);
 
-canvas.addEventListener("click", () => {
-  videoElement.play().catch((error) => {
-    console.error("Error attempting to play the video:", error);
-  });
-  sound.play();
-});
+/**
+ * Play video after option choosen from popup
+ */
+const soundPopup = document.querySelector(".soundPopup");
+const yesBtn = document.querySelector(".yesButton");
+const noBtn = document.querySelector(".noButton");
+soundPopup.classList.add("show");
+yesBtn.addEventListener("click", (e) => playAudioOnClick(e, false));
+noBtn.addEventListener("click", (e) => playAudioOnClick(e, true));
+
+function playAudioOnClick(event, muted) {
+  event.target.classList.add("selected");
+  videoElement.muted = muted;
+  videoElement.play();
+  soundPopup.classList.remove("show");
+  soundPopup.classList.add("hide");
+  setTimeout(() => {
+    soundPopup.style.display = "none";
+  }, 500);
+
+  setTimeout(() => {
+    document.querySelector(".popup").classList.add("show");
+    document.querySelector(".popup").style.display = "block";
+  }, 5000);
+}
 
 function updateRendererProperties(width, height) {
   renderer.setSize(width, height);
@@ -140,9 +136,11 @@ submitBtn.addEventListener("click", () => {
     if (popup.classList.contains("show")) {
       popup.classList.remove("show");
       popup.classList.add("hide");
+      popup.style.display = "none";
     } else {
       popup.classList.remove("hide");
       popup.classList.add("show");
+      popup.style.display = "block";
     }
   }
 });
