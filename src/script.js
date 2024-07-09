@@ -43,6 +43,25 @@ const camera = new THREE.OrthographicCamera(
 );
 camera.position.set(0, 0, 10);
 
+// /**
+//  * Sprite
+//  */
+// const textureLoader = new THREE.TextureLoader();
+// textureLoader.load("../public/landscape.png", (videoTexture) => {
+//   const spriteMaterial = new THREE.SpriteMaterial({ map: videoTexture });
+//   const originalWidth = videoTexture.image.width;
+//   const originalHeight = videoTexture.image.height;
+
+//   const desiredHeight = window.innerHeight;
+//   const ratio = originalHeight / desiredHeight;
+//   const desiredWidth = originalWidth / ratio;
+
+//   const sprite = new THREE.Sprite(spriteMaterial);
+//   scene.add(sprite);
+//   videoLoaded = true;
+//   soundPopup.classList.add("show");
+//   sprite.scale.set(desiredWidth, desiredHeight, 1);
+// });
 /**
  * Video
  */
@@ -126,14 +145,14 @@ yesBtn.addEventListener("click", (e) => playAudioOnClick(e, 1));
 
 function playAudioOnClick(event, volume) {
   event.target.classList.add("selected");
-  // videoElement.muted = muted;
-  videoElement.play();
-  sound.setVolume(volume);
-  sound.play();
   soundPopup.classList.remove("show");
   soundPopup.classList.add("hide");
   setTimeout(() => {
+    document.querySelector(".soundPopupBg").style.display = "none";
     soundPopup.style.display = "none";
+    videoElement.play();
+    sound.setVolume(volume);
+    sound.play();
   }, 500);
 
   setTimeout(() => {
