@@ -11,6 +11,27 @@ const sizes = {
 
 const scene = new THREE.Scene();
 
+/**
+ * Loading Manager
+ */
+const loadingScreen = document.querySelector(".loadingScreen");
+const progressBar = document.querySelector(".progress-bar");
+
+const loadingManager = new THREE.LoadingManager();
+loadingManager.onProgress = onProgress;
+
+let soundLoaded = false,
+  videoLoaded = false,
+  hideLoadingScreen = false;
+
+function onProgress(url, loaded, total) {
+  progressBar.value = (loaded / total) * 100;
+  if (progressBar.value === 100) {
+    // loadingScreen.style.display = "none";
+    soundLoaded = true;
+  }
+}
+
 // Adjust OrthographicCamera parameters
 const camera = new THREE.OrthographicCamera(
   -window.innerWidth / 2,
@@ -28,6 +49,10 @@ camera.position.set(0, 0, 10);
 const videoElement = document.createElement("video");
 videoElement.src = "../public/video.mp4";
 videoElement.load();
+videoElement.playsInline = true;
+videoElement.controls = false;
+videoElement.muted = true;
+videoElement.preload = "auto";
 
 const videoTexture = new THREE.VideoTexture(videoElement);
 videoTexture.colorSpace = THREE.SRGBColorSpace;
@@ -35,7 +60,24 @@ const spriteMaterial = new THREE.SpriteMaterial({ map: videoTexture });
 const sprite = new THREE.Sprite(spriteMaterial);
 scene.add(sprite);
 
+videoElement.addEventListener("progress", updateProgress);
+
+function updateProgress() {
+  if (videoElement.buffered.length > 0) {
+    const bufferedEnd = videoElement.buffered.end(
+      videoElement.buffered.length - 1
+    );
+    const duration = videoElement.duration;
+    const percent = (bufferedEnd / duration) * 100;
+    progressBar.value = percent;
+  }
+}
 videoElement.addEventListener("loadedmetadata", () => {
+  updateProgress();
+});
+
+videoElement.addEventListener("loadeddata", () => {
+  videoLoaded = true;
   videoTexture.needsUpdate = true;
   const originalWidth = videoElement.videoWidth;
   const originalHeight = videoElement.videoHeight;
@@ -43,7 +85,7 @@ videoElement.addEventListener("loadedmetadata", () => {
   const desiredHeight = window.innerHeight;
   const ratio = originalHeight / desiredHeight;
   const desiredWidth = originalWidth / ratio;
-
+  soundPopup.classList.add("show");
   sprite.scale.set(desiredWidth, desiredHeight, 1);
 });
 
@@ -60,19 +102,34 @@ updateRendererProperties(sizes.x, sizes.y);
 renderer.render(scene, camera);
 
 /**
+ * Audio
+ */
+const audioLoader = new THREE.AudioLoader(loadingManager);
+const audioListener = new THREE.AudioListener();
+camera.add(audioListener);
+const sound = new THREE.Audio(audioListener);
+audioLoader.load("../public/backgroundSound.mp3", (audioBuffer) => {
+  sound.setBuffer(audioBuffer);
+  sound.setLoop(true);
+  sound.setVolume(0.5);
+});
+
+/**
  * Play video after option choosen from popup
  */
 const soundPopup = document.querySelector(".soundPopup");
 const yesBtn = document.querySelector(".yesButton");
-const noBtn = document.querySelector(".noButton");
-soundPopup.classList.add("show");
-yesBtn.addEventListener("click", (e) => playAudioOnClick(e, false));
-noBtn.addEventListener("click", (e) => playAudioOnClick(e, true));
+// const noBtn = document.querySelector(".noButton");
 
-function playAudioOnClick(event, muted) {
+yesBtn.addEventListener("click", (e) => playAudioOnClick(e, 1));
+// noBtn.addEventListener("click", (e) => playAudioOnClick(e, 0));
+
+function playAudioOnClick(event, volume) {
   event.target.classList.add("selected");
-  videoElement.muted = muted;
+  // videoElement.muted = muted;
   videoElement.play();
+  sound.setVolume(volume);
+  sound.play();
   soundPopup.classList.remove("show");
   soundPopup.classList.add("hide");
   setTimeout(() => {
@@ -147,6 +204,10 @@ submitBtn.addEventListener("click", () => {
 
 function update() {
   renderer.render(scene, camera);
+  if (videoLoaded && soundLoaded && !hideLoadingScreen) {
+    loadingScreen.style.display = "none";
+    hideLoadingScreen = true;
+  }
   requestAnimationFrame(update);
 }
 
