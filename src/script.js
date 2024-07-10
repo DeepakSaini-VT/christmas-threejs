@@ -27,7 +27,6 @@ let soundLoaded = false,
 function onProgress(url, loaded, total) {
   progressBar.value = (loaded / total) * 100;
   if (progressBar.value === 100) {
-    // loadingScreen.style.display = "none";
     soundLoaded = true;
   }
 }
@@ -65,41 +64,54 @@ camera.position.set(0, 0, 10);
 /**
  * Video
  */
-const videoElement = document.createElement("video");
-videoElement.src = "../public/video.mp4";
-videoElement.load();
-videoElement.playsInline = true;
-videoElement.controls = false;
-videoElement.muted = true;
-videoElement.preload = "auto";
+const videoElement1 = document.createElement("video");
+videoElement1.src = "../public/videos/givenchy-intro.mp4";
+videoElement1.load();
+videoElement1.playsInline = true;
+videoElement1.controls = false;
+videoElement1.muted = false;
+videoElement1.preload = "auto";
 
-const videoTexture = new THREE.VideoTexture(videoElement);
+const videoElement2 = document.createElement("video");
+videoElement2.src = "../public/videos/snow-video.mp4";
+videoElement2.load();
+videoElement2.playsInline = true;
+videoElement2.controls = false;
+videoElement2.muted = true;
+videoElement2.loop = true;
+videoElement2.preload = "auto";
+
+const videoTexture = new THREE.VideoTexture(videoElement1);
 videoTexture.colorSpace = THREE.SRGBColorSpace;
+
+const videoTexture2 = new THREE.VideoTexture(videoElement2);
+videoTexture2.colorSpace = THREE.SRGBColorSpace;
+
 const spriteMaterial = new THREE.SpriteMaterial({ map: videoTexture });
 const sprite = new THREE.Sprite(spriteMaterial);
 scene.add(sprite);
 
-videoElement.addEventListener("progress", updateProgress);
+videoElement1.addEventListener("progress", updateProgress);
 
 function updateProgress() {
-  if (videoElement.buffered.length > 0) {
-    const bufferedEnd = videoElement.buffered.end(
-      videoElement.buffered.length - 1
+  if (videoElement1.buffered.length > 0) {
+    const bufferedEnd = videoElement1.buffered.end(
+      videoElement1.buffered.length - 1
     );
-    const duration = videoElement.duration;
+    const duration = videoElement1.duration;
     const percent = (bufferedEnd / duration) * 100;
     progressBar.value = percent;
   }
 }
-videoElement.addEventListener("loadedmetadata", () => {
+videoElement1.addEventListener("loadedmetadata", () => {
   updateProgress();
 });
 
-videoElement.addEventListener("loadeddata", () => {
+videoElement1.addEventListener("loadeddata", () => {
   videoLoaded = true;
   videoTexture.needsUpdate = true;
-  const originalWidth = videoElement.videoWidth;
-  const originalHeight = videoElement.videoHeight;
+  const originalWidth = videoElement1.videoWidth;
+  const originalHeight = videoElement1.videoHeight;
 
   const desiredHeight = window.innerHeight;
   const ratio = originalHeight / desiredHeight;
@@ -108,9 +120,24 @@ videoElement.addEventListener("loadeddata", () => {
   sprite.scale.set(desiredWidth, desiredHeight, 1);
 });
 
-videoElement.addEventListener("ended", () => {
-  videoElement.loop = true;
-  videoElement.play();
+videoElement1.addEventListener("ended", () => {
+  const originalWidth = videoElement2.videoWidth;
+  const originalHeight = videoElement2.videoHeight;
+
+  const desiredHeight = window.innerHeight;
+  const ratio = originalHeight / desiredHeight;
+  const desiredWidth = originalWidth / ratio;
+  sprite.scale.set(desiredWidth, desiredHeight, 1);
+
+  spriteMaterial.map = videoTexture2;
+  spriteMaterial.needsUpdate = true;
+  spriteMaterial.map.needsUpdate = true;
+  videoElement2.play();
+  sound.play();
+  setTimeout(() => {
+    document.querySelector(".popup").classList.add("show");
+    document.querySelector(".popup").style.display = "block";
+  }, 5000);
 });
 
 /**
@@ -127,10 +154,10 @@ const audioLoader = new THREE.AudioLoader(loadingManager);
 const audioListener = new THREE.AudioListener();
 camera.add(audioListener);
 const sound = new THREE.Audio(audioListener);
-audioLoader.load("../public/backgroundSound.mp3", (audioBuffer) => {
+audioLoader.load("../public/audios/backgroundSound.mp3", (audioBuffer) => {
   sound.setBuffer(audioBuffer);
   sound.setLoop(true);
-  sound.setVolume(0.5);
+  sound.setVolume(1);
 });
 
 /**
@@ -138,27 +165,18 @@ audioLoader.load("../public/backgroundSound.mp3", (audioBuffer) => {
  */
 const soundPopup = document.querySelector(".soundPopup");
 const yesBtn = document.querySelector(".yesButton");
-// const noBtn = document.querySelector(".noButton");
 
-yesBtn.addEventListener("click", (e) => playAudioOnClick(e, 1));
-// noBtn.addEventListener("click", (e) => playAudioOnClick(e, 0));
+yesBtn.addEventListener("click", (e) => playAudioOnClick(e));
 
-function playAudioOnClick(event, volume) {
+function playAudioOnClick(event) {
   event.target.classList.add("selected");
   soundPopup.classList.remove("show");
   soundPopup.classList.add("hide");
   setTimeout(() => {
     document.querySelector(".soundPopupBg").style.display = "none";
     soundPopup.style.display = "none";
-    videoElement.play();
-    sound.setVolume(volume);
-    sound.play();
+    videoElement1.play();
   }, 500);
-
-  setTimeout(() => {
-    document.querySelector(".popup").classList.add("show");
-    document.querySelector(".popup").style.display = "block";
-  }, 5000);
 }
 
 function updateRendererProperties(width, height) {
@@ -213,10 +231,6 @@ submitBtn.addEventListener("click", () => {
       popup.classList.remove("show");
       popup.classList.add("hide");
       popup.style.display = "none";
-    } else {
-      popup.classList.remove("hide");
-      popup.classList.add("show");
-      popup.style.display = "block";
     }
   }
 });
